@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -34,6 +33,7 @@ import javafx.scene.control.TableView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import core.Config;
 
 /**
  *
@@ -159,10 +159,10 @@ public class BuildActionHistory extends Thread{
             if(numberOfThreads <= 0)
                 numberOfThreads = 1;
             
-            int skip = 50 * numberOfThreads;
+            int skip = Config.RESULTS_LIMIT * numberOfThreads;
             for(int i = 0; i < numberOfThreads; i++){
                 getEntArray.add(new BuildEntityAction(entities, core, actInfo.entityID, actInfo.actionID, startValue, skip, total));
-                startValue += 50;
+                startValue += Config.RESULTS_LIMIT;
                 getEntArray.get(i).setName(this.getName() + "-entities " + i);
                 getEntArray.get(i).setDaemon(true);
                 getEntArray.get(i).setPriority(Thread.MIN_PRIORITY);
